@@ -9,16 +9,22 @@ import Foundation
 
 struct User: Codable {
     let id: Int
+    let googleId: String
     let email: String
     let name: String
-    let income: Double
-    let googleId: String?
+    let givenName: String
+    let familyName: String
+    let pictureUrl: String
+    var income: Double?
 
     enum CodingKeys: String, CodingKey {
         case id
+        case googleId = "google_id"
         case email
         case name
+        case givenName = "given_name"
+        case familyName = "family_name"
+        case pictureUrl = "picture_url"
         case income
-        case googleId = "google_id"
     }
 }

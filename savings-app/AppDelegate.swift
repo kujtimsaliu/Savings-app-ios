@@ -11,13 +11,41 @@ import GoogleSignIn
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    var window: UIWindow?
+    var appCoordinator: AppCoordinator?
+    
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        return true
+        window = UIWindow(windowScene: windowScene)
+        
+        appCoordinator = AppCoordinator(window: window)
+        appCoordinator?.start()
     }
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-            return GIDSignIn.sharedInstance.handle(url)
+    func sceneDidDisconnect(_ scene: UIScene) {}
+    
+    func sceneDidBecomeActive(_ scene: UIScene) {}
+    
+    func sceneWillResignActive(_ scene: UIScene) {}
+    
+    func sceneWillEnterForeground(_ scene: UIScene) {}
+    
+    func sceneDidEnterBackground(_ scene: UIScene) {}
+    
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        return GIDSignIn.sharedInstance.handle(url)
+    }
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Configure Google Sign-In
+        GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: "347213759493-c7hdn80mephe4voo45ngsqvgldd6j6d6.apps.googleusercontent.com")
+        
+        return true
     }
 
     // MARK: UISceneSession Lifecycle
