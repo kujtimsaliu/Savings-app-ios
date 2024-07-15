@@ -16,6 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+//        testAPIClient()
+
         guard let _ = (scene as? UIWindowScene) else { return }
     }
 
@@ -45,6 +47,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+    }
+    
+    func testAPIClient() {
+        let apiClient = APIClient.shared
+        
+        print("Testing login...")
+        apiClient.login(email: "ks@gmail.com", password: "string123") { result in
+            switch result {
+            case .success(let token):
+                print("Login successful. Token: \(token)")
+                
+                print("Testing get expenses...")
+                apiClient.getExpenses { result in
+                    switch result {
+                    case .success(let expenses):
+                        print("Successfully fetched expenses:")
+                        expenses.forEach { expense in
+                            print("- \(expense.amount) on \(expense.category) (\(expense.date))")
+                        }
+                    case .failure(let error):
+                        print("Failed to fetch expenses: \(error.localizedDescription)")
+                    }
+                }
+                
+            case .failure(let error):
+                print("Login failed: \(error.localizedDescription)")
+            }
+        }
     }
 
 
