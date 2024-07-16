@@ -5,4 +5,14 @@
 //  Created by Kujtim Saliu on 16.7.24.
 //
 
-import Foundation
+import UIKit
+
+class HomeViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = .primaryBackgroundColor
+        
+        title = "Home"
+    }
+}

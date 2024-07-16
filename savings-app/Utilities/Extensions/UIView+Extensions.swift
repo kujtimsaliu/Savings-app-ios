@@ -8,6 +8,10 @@
 import UIKit
 
 extension UIView {
+    func add(_ subviews: UIView...) {
+        subviews.forEach(addSubview(_:))
+    }
+    
     func getBottomSafeAreaHeight() -> CGFloat {
         let window = UIApplication.shared.keyWindow
         return window?.safeAreaInsets.bottom ?? 0

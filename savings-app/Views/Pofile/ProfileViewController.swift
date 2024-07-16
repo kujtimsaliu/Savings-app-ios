@@ -5,4 +5,12 @@
 //  Created by Kujtim Saliu on 16.7.24.
 //
 
-import Foundation
+import UIKit
+
+class ProfileViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        title = "Profile"
+    }
+}
