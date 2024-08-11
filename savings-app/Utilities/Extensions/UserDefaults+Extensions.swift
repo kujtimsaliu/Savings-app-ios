@@ -21,7 +21,7 @@ extension UserDefaults {
         case userIncome
     }
     
-    func setUser(id: Int, googleId: String, email: String, name: String, givenName: String, familyName: String, pictureUrl: String, income: Double?) {
+    func setUser(id: String, googleId: String, email: String, name: String, givenName: String, familyName: String, pictureUrl: String, income: Double?) {
         set(id, forKey: UserKeys.userId.rawValue)
         set(googleId, forKey: UserKeys.userGoogleId.rawValue)
         set(email, forKey: UserKeys.userEmail.rawValue)
@@ -33,7 +33,7 @@ extension UserDefaults {
     }
     
     func getUser() -> User? {
-        guard let id = object(forKey: UserKeys.userId.rawValue) as? Int,
+        guard let id = object(forKey: UserKeys.userId.rawValue) as? String,
               let googleId = string(forKey: UserKeys.userGoogleId.rawValue),
               let email = string(forKey: UserKeys.userEmail.rawValue),
               let name = string(forKey: UserKeys.userName.rawValue),

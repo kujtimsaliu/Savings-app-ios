@@ -10,8 +10,10 @@ import UIKit
 class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .primaryBackgroundColor
+        let tokenManager = TokenManager()
+        print("jaja\(String(describing: tokenManager.getAccessToken()))")
+        print(tokenManager.getRefreshToken() ?? "tapa")
+//        view.backgroundColor = .primaryBackgroundColor
         
         title = "Home"
     }

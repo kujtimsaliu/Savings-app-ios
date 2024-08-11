@@ -22,8 +22,10 @@ class UserService {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let body: [String: Any] = [
+            
             "email": email,
-            "password": password
+            "name": password,
+            "income": 2.22
         ]
         
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
@@ -81,7 +83,7 @@ class UserService {
     }
     
     func createOrFetchUser(googleUser: GIDGoogleUser, completion: @escaping (Result<User, Error>) -> Void) {
-        let url = URL(string: baseURL + "/users")!
+        let url = URL(string: baseURL + "/auth/google")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -113,13 +115,10 @@ class UserService {
             }
             
             do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let detail = json["detail"] as? String {
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: detail])))
-                } else {
-                    let user = try JSONDecoder().decode(User.self, from: data)
-                    completion(.success(user))
-                }
+                let authResponse = try JSONDecoder().decode(AuthResponse.self, from: data)
+                let tokenManager = TokenManager()
+                tokenManager.saveTokens(accessToken: authResponse.accessToken, refreshToken: authResponse.refreshToken)
+                completion(.success(authResponse.user))
             } catch {
                 print("Decoding error: \(error)")
                 completion(.failure(error))
@@ -127,6 +126,8 @@ class UserService {
         }.resume()
     }
 }
+// uvicorn app.main:app --reload
+
 
 //class UserService {
 //    static let shared = UserService()

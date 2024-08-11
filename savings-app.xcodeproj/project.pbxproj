@@ -56,6 +56,9 @@
 		638345472C46F28A00925ECC /* SetupCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638345462C46F28A00925ECC /* SetupCompleteViewController.swift */; };
 		638345492C47148900925ECC /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638345482C47148900925ECC /* SignUpViewModel.swift */; };
 		6383454B2C4714CC00925ECC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6383454A2C4714CC00925ECC /* SignUpViewController.swift */; };
+		6383454D2C47F6B600925ECC /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6383454C2C47F6B600925ECC /* AuthResponse.swift */; };
+		638345502C480D1F00925ECC /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6383454F2C480D1F00925ECC /* TokenManager.swift */; };
+		638345532C480DFF00925ECC /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 638345522C480DFF00925ECC /* KeychainAccess */; };
 		63FA88122C34A83C00332554 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88112C34A83C00332554 /* AppDelegate.swift */; };
 		63FA88142C34A83C00332554 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88132C34A83C00332554 /* SceneDelegate.swift */; };
 		63FA88162C34A83C00332554 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88152C34A83C00332554 /* ViewController.swift */; };
@@ -133,6 +136,8 @@
 		638345462C46F28A00925ECC /* SetupCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupCompleteViewController.swift; sourceTree = "<group>"; };
 		638345482C47148900925ECC /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		6383454A2C4714CC00925ECC /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		6383454C2C47F6B600925ECC /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
+		6383454F2C480D1F00925ECC /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		63FA880E2C34A83C00332554 /* savings-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "savings-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63FA88112C34A83C00332554 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63FA88132C34A83C00332554 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -167,6 +172,7 @@
 			files = (
 				6347E1C42C3B323900B476ED /* GoogleSignIn in Frameworks */,
 				6347E1C62C3B323900B476ED /* GoogleSignInSwift in Frameworks */,
+				638345532C480DFF00925ECC /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				63725B4B2C45B0CC00937BFD /* UserDefaults+Extensions.swift */,
+				63725B662C45DAD500937BFD /* HomeViewModel.swift */,
 				63725B4E2C45B37700937BFD /* UIView+Extensions.swift */,
 				63725B942C46640900937BFD /* UIColor+Extension.swift */,
 			);
@@ -201,7 +208,6 @@
 		63725B512C45D96300937BFD /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				63725B662C45DAD500937BFD /* HomeViewModel.swift */,
 				63725B682C45DAE100937BFD /* ExpensesViewModel.swift */,
 				63725B6A2C45DAE500937BFD /* AIViewModel.swift */,
 				63725B6C2C45DAEB00937BFD /* BudgetsViewModel.swift */,
@@ -242,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				63725B552C45DA1B00937BFD /* Constants.swift */,
+				6383454E2C480D1200925ECC /* Authentication */,
 				63725B4A2C45B0C000937BFD /* Extensions */,
 			);
 			path = Utilities;
@@ -350,6 +357,14 @@
 			path = OnboardingPages;
 			sourceTree = "<group>";
 		};
+		6383454E2C480D1200925ECC /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				6383454F2C480D1F00925ECC /* TokenManager.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		63FA88052C34A83C00332554 = {
 			isa = PBXGroup;
 			children = (
@@ -412,6 +427,7 @@
 				6347E1C92C3B345100B476ED /* User.swift */,
 				63FA88382C35F39900332554 /* Expense.swift */,
 				63725B822C45DB9C00937BFD /* Budget.swift */,
+				6383454C2C47F6B600925ECC /* AuthResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -466,6 +482,7 @@
 			packageProductDependencies = (
 				6347E1C32C3B323900B476ED /* GoogleSignIn */,
 				6347E1C52C3B323900B476ED /* GoogleSignInSwift */,
+				638345522C480DFF00925ECC /* KeychainAccess */,
 			);
 			productName = "savings-app";
 			productReference = 63FA880E2C34A83C00332554 /* savings-app.app */;
@@ -501,6 +518,7 @@
 			mainGroup = 63FA88052C34A83C00332554;
 			packageReferences = (
 				6347E1C22C3B323900B476ED /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				638345512C480DFF00925ECC /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = 63FA880F2C34A83C00332554 /* Products */;
 			projectDirPath = "";
@@ -558,6 +576,7 @@
 				63FA88442C35FB3700332554 /* HTTPTask.swift in Sources */,
 				6383454B2C4714CC00925ECC /* SignUpViewController.swift in Sources */,
 				63725B7F2C45DB7300937BFD /* ProfileViewController.swift in Sources */,
+				6383454D2C47F6B600925ECC /* AuthResponse.swift in Sources */,
 				638345492C47148900925ECC /* SignUpViewModel.swift in Sources */,
 				638345472C46F28A00925ECC /* SetupCompleteViewController.swift in Sources */,
 				63725B812C45DB7E00937BFD /* CustomTabBarController.swift in Sources */,
@@ -590,6 +609,7 @@
 				63FA884A2C35FB4900332554 /* Router.swift in Sources */,
 				63FA88122C34A83C00332554 /* AppDelegate.swift in Sources */,
 				63725B562C45DA1B00937BFD /* Constants.swift in Sources */,
+				638345502C480D1F00925ECC /* TokenManager.swift in Sources */,
 				6383453F2C46F26700925ECC /* NameViewController.swift in Sources */,
 				63725B902C45DC8400937BFD /* OnboardingPageViewController.swift in Sources */,
 				63725B872C45DC1500937BFD /* OnboardingCoordinator.swift in Sources */,
@@ -877,6 +897,14 @@
 				minimumVersion = 7.1.0;
 			};
 		};
+		638345512C480DFF00925ECC /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -889,6 +917,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6347E1C22C3B323900B476ED /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		638345522C480DFF00925ECC /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 638345512C480DFF00925ECC /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

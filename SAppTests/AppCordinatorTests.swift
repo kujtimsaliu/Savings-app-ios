@@ -34,7 +34,7 @@ class AppCoordinatorTests: XCTestCase {
     func testStart() {
         appCoordinator.start()
         XCTAssertEqual(appCoordinator.childCoordinators.count, 1)
-        XCTAssertTrue(appCoordinator.childCoordinators.first is TabBarCoordinator)
+        XCTAssertTrue(appCoordinator.childCoordinators.first is OnboardingCoordinator)
     }
 }
 

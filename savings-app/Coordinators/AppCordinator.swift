@@ -26,7 +26,9 @@ class AppCoordinator: Coordinator {
     }
     
     func start() {
-        showOnboarding()
+            showMainApp()
+//            showOnboarding()
+
        
         
 //        let tabBarCoordinator = TabBarCoordinator(window: window)

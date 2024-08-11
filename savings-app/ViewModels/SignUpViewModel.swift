@@ -30,7 +30,7 @@ class SignUpViewModel {
         userService.signUp(email: email, password: password) { result in
             switch result {
             case .success(let user):
-                UserDefaults.standard.setUser(id: user.id,
+                UserDefaults.standard.setUser(id: user.id ?? "123",
                                               googleId: user.googleId,
                                               email: user.email,
                                               name: user.name,
@@ -70,7 +70,7 @@ class SignUpViewModel {
                 switch result {
                 case .success(let user):
                     // Save user data locally
-                    UserDefaults.standard.setUser(id: user.id,
+                    UserDefaults.standard.setUser(id: user.id ?? "123",
                                                   googleId: user.googleId,
                                                   email: user.email,
                                                   name: user.name,
