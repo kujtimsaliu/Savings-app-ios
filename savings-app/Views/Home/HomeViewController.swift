@@ -13,8 +13,7 @@ class HomeViewController: UIViewController {
         let tokenManager = TokenManager()
         print("jaja\(String(describing: tokenManager.getAccessToken()))")
         print(tokenManager.getRefreshToken() ?? "tapa")
-//        view.backgroundColor = .primaryBackgroundColor
-        
+        view.backgroundColor = .systemBackground
         title = "Home"
     }
 }

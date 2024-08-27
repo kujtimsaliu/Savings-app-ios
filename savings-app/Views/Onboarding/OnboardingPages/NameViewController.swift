@@ -9,25 +9,33 @@ import UIKit
 
 class NameViewController: OnboardingViewController {
     lazy var nameTextField: UITextField = {
-       let tf = UITextField()
-        tf.placeholder = "Enter your name"
+        let tf = UITextField()
+        tf.placeholder = "Your Name"
         tf.borderStyle = .roundedRect
+        tf.font = UIFont.systemFont(ofSize: 17)
         return tf
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.text = """
-                          Let's start wiht your name. 
-                          What should we call you
-                          """
+        titleLabel.text = "What's your name?"
+        subtitleLabel.text = "Let's personalize your experience"
         progressView.progress = 0.2
         setupNameTextField()
     }
-    
+
     func setupNameTextField() {
         view.addSubview(nameTextField)
-        nameTextField.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, topConstant: 40, leftConstant: 40, rightConstant: 40, heightConstant: 44)
+        nameTextField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            nameTextField.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 40),
+            nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
+            nameTextField.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
-    
+
+    override func saveData() {
+        UserDefaults.standard.set(nameTextField.text, forKey: "userName")
+    }
 }

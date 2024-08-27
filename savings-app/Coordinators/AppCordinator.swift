@@ -20,37 +20,34 @@ protocol CoordinatorDelegate: AnyObject {
 class AppCoordinator: Coordinator {
     let window: UIWindow
     var childCoordinators = [Coordinator]()
-    
+
     init(window: UIWindow){
         self.window = window
     }
-    
-    func start() {
-            showMainApp()
-//            showOnboarding()
 
-       
-        
-//        let tabBarCoordinator = TabBarCoordinator(window: window)
-//        childCoordinators.append(tabBarCoordinator)
-//        tabBarCoordinator.start()
+    func start() {
+        if UserDefaults.standard.hasCompletedOnboarding() {
+            showMainApp()
+        } else {
+            showOnboarding()
+        }
     }
-    
+
     private func showOnboarding() {
         let navigationController = UINavigationController()
         let onboardingCoordinator = OnboardingCoordinator(navigationController: navigationController)
         onboardingCoordinator.delegate = self
         childCoordinators.append(onboardingCoordinator)
         onboardingCoordinator.start()
-        
+
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
     }
-    
+
     private func showMainApp(){
-        let tabBarCoodinator = TabBarCoordinator(window: window)
-        childCoordinators.append(tabBarCoodinator)
-        tabBarCoodinator.start()
+        let tabBarCoordinator = TabBarCoordinator(window: window)
+        childCoordinators.append(tabBarCoordinator)
+        tabBarCoordinator.start()
     }
 }
 
@@ -58,9 +55,8 @@ extension AppCoordinator: CoordinatorDelegate {
     func coordinatorDidFinish(_ coordinator: Coordinator) {
         if coordinator is OnboardingCoordinator {
             childCoordinators = childCoordinators.filter { $0 !== coordinator }
+            UserDefaults.standard.setOnboardingCompleted()
             showMainApp()
         }
     }
 }
-
-

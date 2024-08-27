@@ -9,24 +9,34 @@ import UIKit
 
 class FinancialGoalsViewController: OnboardingViewController {
     lazy var goalsTextView: UITextView = {
-        let tf = UITextView()
-        tf.font = UIFont.systemFont(ofSize: 16)
-        tf.layer.borderColor = UIColor.lightGray.cgColor
-        tf.layer.borderWidth = 1
-        tf.layer.cornerRadius = 5
-        return tf
+        let tv = UITextView()
+        tv.font = UIFont.systemFont(ofSize: 17)
+        tv.layer.borderColor = UIColor.systemGray4.cgColor
+        tv.layer.borderWidth = 1
+        tv.layer.cornerRadius = 8
+        return tv
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleLabel.text = "What are you main financial goals?"
+        titleLabel.text = "What are your main financial goals?"
+        subtitleLabel.text = "We'll help you achieve them"
         progressView.progress = 0.4
-        
         setupGoalsTextView()
     }
-    
-    func setupGoalsTextView(){
+
+    func setupGoalsTextView() {
         view.addSubview(goalsTextView)
-        goalsTextView.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, topConstant: 40, leftConstant: 40, rightConstant: 40, heightConstant: 75)
+        goalsTextView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            goalsTextView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 40),
+            goalsTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            goalsTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
+            goalsTextView.heightAnchor.constraint(equalToConstant: 150)
+        ])
+    }
+
+    override func saveData() {
+        UserDefaults.standard.set(goalsTextView.text, forKey: "financialGoals")
     }
 }

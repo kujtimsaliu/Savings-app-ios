@@ -15,14 +15,14 @@ class SetupCompleteViewController: OnboardingViewController, SignUpViewControlle
         button.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
         return button
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.text = "Setup complete!\nYou're almost ready to go."
         progressView.progress = 1.0
         setupSignUpButton()
     }
-    
+
     func setupSignUpButton() {
         view.addSubview(signUpButton)
         signUpButton.translatesAutoresizingMaskIntoConstraints = false
@@ -31,14 +31,13 @@ class SetupCompleteViewController: OnboardingViewController, SignUpViewControlle
             signUpButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40)
         ])
     }
-    
+
     @objc func signUpTapped() {
-//        delegate?.didFinishOnboarding()
         let signUpVC = SignUpViewController()
         signUpVC.delegate = self
         navigationController?.pushViewController(signUpVC, animated: true)
     }
-    
+
     func didFinishSignUp() {
         delegate?.didFinishOnboarding()
     }
