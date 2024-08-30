@@ -9,8 +9,8 @@ import UIKit
 
 class CustomBarChartView: UIView {
     private var bars: [Bar] = []
-    private let barWidth: CGFloat = 30
-    private let spacing: CGFloat = 20
+    let barWidth: CGFloat = 30
+    let spacing: CGFloat = 20
     private let bottomPadding: CGFloat = 30 // Space for dates
     
     struct Bar {

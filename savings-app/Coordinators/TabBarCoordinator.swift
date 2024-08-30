@@ -35,6 +35,7 @@ class TabBarCoordinator: Coordinator {
         
         tabBarController.viewControllers = [homeVC, expensesVC, aiInsightsVC, budgetsVC, profileVC].map { UINavigationController(rootViewController: $0) }
         
+        tabBarController.tabBar.backgroundColor = .white
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
     }}

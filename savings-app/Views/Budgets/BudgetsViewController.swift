@@ -8,6 +8,14 @@
 import UIKit
 
 class BudgetsViewController: UIViewController, AddBudgetViewControllerDelegate {
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsHorizontalScrollIndicator = true
+        scrollView.showsVerticalScrollIndicator = false
+        return scrollView
+    }()
+    
     private let chartView: CustomBarChartView = {
         let chartView = CustomBarChartView()
         chartView.translatesAutoresizingMaskIntoConstraints = false
@@ -54,22 +62,30 @@ class BudgetsViewController: UIViewController, AddBudgetViewControllerDelegate {
     
     func didAddBudget(_ budget: Budget) {
         viewModel.addBudget(budget)
+        viewModel.budgetsDidChange?()
     }
-
+    
     private func setupUI() {
         view.backgroundColor = .systemBackground
         title = "Budgets"
         
-        view.addSubview(chartView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(chartView)
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            chartView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            chartView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            chartView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            chartView.heightAnchor.constraint(equalToConstant: 200),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -20),
+            scrollView.heightAnchor.constraint(equalToConstant: 200),
             
-            tableView.topAnchor.constraint(equalTo: chartView.bottomAnchor, constant: 20),
+            chartView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            chartView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            chartView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            chartView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            chartView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
+            
+            tableView.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 20),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -89,12 +105,34 @@ class BudgetsViewController: UIViewController, AddBudgetViewControllerDelegate {
     
     private func updateChartData() {
         let colors: [UIColor] = [.systemBlue, .systemGreen, .systemRed, .systemYellow, .systemPurple]
-        let bars = viewModel.budgets.enumerated().map { index, budget in
+        let bars = viewModel.budgets.enumerated().reversed().map { index, budget in
             CustomBarChartView.Bar(value: budget.amount, date: budget.createdAt, color: colors[index % colors.count])
         }
         chartView.setBars(bars)
+        
+        // Update the width of the chart view based on the number of bars
+        let chartWidth = CGFloat(bars.count) * (chartView.barWidth + chartView.spacing) + chartView.spacing
+        
+        // Ensure that the chart view is properly positioned within the scroll view
+        NSLayoutConstraint.deactivate(chartView.constraints) // Reset constraints
+        chartView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            chartView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor), // Attach leading edge
+            chartView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            chartView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            chartView.widthAnchor.constraint(equalToConstant: chartWidth),
+            chartView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        ])
+        
+        // Ensure the scroll view's content size is updated
+        scrollView.contentSize = CGSize(width: chartWidth, height: scrollView.bounds.height)
+        
+        // Scroll to the right to show the newly added budget
+        let newContentOffsetX = max(scrollView.contentSize.width - scrollView.bounds.width, 0)
+        scrollView.setContentOffset(CGPoint(x: newContentOffsetX, y: 0), animated: true)
     }
 }
+
 
 extension BudgetsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
