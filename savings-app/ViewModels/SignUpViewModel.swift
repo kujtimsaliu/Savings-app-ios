@@ -66,6 +66,8 @@ class SignUpViewModel {
                 return
             }
             
+            
+            
             self.userService.createOrFetchUser(googleUser: user) { result in
                 switch result {
                 case .success(let user):

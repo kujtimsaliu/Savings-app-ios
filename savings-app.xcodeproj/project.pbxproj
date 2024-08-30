@@ -68,6 +68,7 @@
 		638F24952C7FD2CD00C9E5E2 /* CustomPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638F24942C7FD2CD00C9E5E2 /* CustomPieChartView.swift */; };
 		638F24972C7FD3AC00C9E5E2 /* CustomBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638F24962C7FD3AC00C9E5E2 /* CustomBarChartView.swift */; };
 		638F24992C7FD4A400C9E5E2 /* AddBudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638F24982C7FD4A400C9E5E2 /* AddBudgetViewController.swift */; };
+		63D1FEC02C82655F0076AFA8 /* ReportsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D1FEBF2C82655F0076AFA8 /* ReportsViewController.swift */; };
 		63FA88122C34A83C00332554 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88112C34A83C00332554 /* AppDelegate.swift */; };
 		63FA88142C34A83C00332554 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88132C34A83C00332554 /* SceneDelegate.swift */; };
 		63FA88162C34A83C00332554 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88152C34A83C00332554 /* ViewController.swift */; };
@@ -155,6 +156,7 @@
 		638F24942C7FD2CD00C9E5E2 /* CustomPieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPieChartView.swift; sourceTree = "<group>"; };
 		638F24962C7FD3AC00C9E5E2 /* CustomBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBarChartView.swift; sourceTree = "<group>"; };
 		638F24982C7FD4A400C9E5E2 /* AddBudgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBudgetViewController.swift; sourceTree = "<group>"; };
+		63D1FEBF2C82655F0076AFA8 /* ReportsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsViewController.swift; sourceTree = "<group>"; };
 		63FA880E2C34A83C00332554 /* savings-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "savings-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63FA88112C34A83C00332554 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63FA88132C34A83C00332554 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				63725B722C45DB1A00937BFD /* AIInsigts */,
 				63725B732C45DB2500937BFD /* Budgets */,
 				63725B742C45DB3100937BFD /* Pofile */,
+				63D1FEBE2C8265430076AFA8 /* Reports */,
 				63725B8C2C45DC4800937BFD /* Onboarding */,
 				63725B912C45DC8D00937BFD /* Auth */,
 				63725B752C45DB3900937BFD /* Common */,
@@ -396,6 +399,14 @@
 				6383454F2C480D1F00925ECC /* TokenManager.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		63D1FEBE2C8265430076AFA8 /* Reports */ = {
+			isa = PBXGroup;
+			children = (
+				63D1FEBF2C82655F0076AFA8 /* ReportsViewController.swift */,
+			);
+			path = Reports;
 			sourceTree = "<group>";
 		};
 		63FA88052C34A83C00332554 = {
@@ -628,6 +639,7 @@
 				6347E1C82C3B330400B476ED /* GoogleSignInManager.swift in Sources */,
 				63725B652C45DAC600937BFD /* ProfileCoordinator.swift in Sources */,
 				63FA88392C35F39900332554 /* Expense.swift in Sources */,
+				63D1FEC02C82655F0076AFA8 /* ReportsViewController.swift in Sources */,
 				63725B672C45DAD500937BFD /* HomeViewModel.swift in Sources */,
 				638F24992C7FD4A400C9E5E2 /* AddBudgetViewController.swift in Sources */,
 				63FA88512C35FC3400332554 /* ExpenseService.swift in Sources */,
