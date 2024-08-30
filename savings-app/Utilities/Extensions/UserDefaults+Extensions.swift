@@ -7,6 +7,8 @@
 
 import UIKit
 
+import UIKit
+
 extension UserDefaults {
     private enum UserKeys: String {
         case userId
@@ -18,6 +20,8 @@ extension UserDefaults {
         case userPictureUrl
         case userIncome
         case hasCompletedOnboarding
+        case financialGoals
+        case selectedExpenseCategories
     }
 
     func setUser(id: String, googleId: String, email: String, name: String, givenName: String, familyName: String, pictureUrl: String, income: Double?) {
@@ -32,7 +36,7 @@ extension UserDefaults {
     }
 
     func getUser() -> User? {
-        guard let id = object(forKey: UserKeys.userId.rawValue) as? String,
+        guard let id = string(forKey: UserKeys.userId.rawValue),
               let googleId = string(forKey: UserKeys.userGoogleId.rawValue),
               let email = string(forKey: UserKeys.userEmail.rawValue),
               let name = string(forKey: UserKeys.userName.rawValue),
@@ -58,12 +62,27 @@ extension UserDefaults {
         removeObject(forKey: UserKeys.userIncome.rawValue)
     }
 
-    // New methods for onboarding status
     func setOnboardingCompleted() {
         set(true, forKey: UserKeys.hasCompletedOnboarding.rawValue)
     }
 
     func hasCompletedOnboarding() -> Bool {
         return bool(forKey: UserKeys.hasCompletedOnboarding.rawValue)
+    }
+
+    func setFinancialGoals(_ goals: String) {
+        set(goals, forKey: UserKeys.financialGoals.rawValue)
+    }
+
+    func getFinancialGoals() -> String? {
+        return string(forKey: UserKeys.financialGoals.rawValue)
+    }
+
+    func setSelectedExpenseCategories(_ categories: [String]) {
+        set(categories, forKey: UserKeys.selectedExpenseCategories.rawValue)
+    }
+
+    func getSelectedExpenseCategories() -> [String]? {
+        return stringArray(forKey: UserKeys.selectedExpenseCategories.rawValue)
     }
 }

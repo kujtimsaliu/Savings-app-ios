@@ -48,6 +48,8 @@
 		63725BBF2C46779000937BFD /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63725BBE2C46779000937BFD /* UserTests.swift */; };
 		63725BC12C4677F400937BFD /* UserDefaultsExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63725BC02C4677F400937BFD /* UserDefaultsExtensionTests.swift */; };
 		63725BC32C46783400937BFD /* UserServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63725BC22C46783400937BFD /* UserServiceTests.swift */; };
+		638145F52C7FCD4200702D42 /* BudgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638145F42C7FCD4200702D42 /* BudgetCell.swift */; };
+		638145FA2C7FD19A00702D42 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 638145F92C7FD19A00702D42 /* DGCharts */; };
 		6383453D2C46F26100925ECC /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6383453C2C46F26100925ECC /* WelcomeViewController.swift */; };
 		6383453F2C46F26700925ECC /* NameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6383453E2C46F26700925ECC /* NameViewController.swift */; };
 		638345412C46F27200925ECC /* FinancialGoalsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638345402C46F27200925ECC /* FinancialGoalsViewController.swift */; };
@@ -59,6 +61,9 @@
 		6383454D2C47F6B600925ECC /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6383454C2C47F6B600925ECC /* AuthResponse.swift */; };
 		638345502C480D1F00925ECC /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6383454F2C480D1F00925ECC /* TokenManager.swift */; };
 		638345532C480DFF00925ECC /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 638345522C480DFF00925ECC /* KeychainAccess */; };
+		638F24952C7FD2CD00C9E5E2 /* CustomPieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638F24942C7FD2CD00C9E5E2 /* CustomPieChartView.swift */; };
+		638F24972C7FD3AC00C9E5E2 /* CustomBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638F24962C7FD3AC00C9E5E2 /* CustomBarChartView.swift */; };
+		638F24992C7FD4A400C9E5E2 /* AddBudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638F24982C7FD4A400C9E5E2 /* AddBudgetViewController.swift */; };
 		63FA88122C34A83C00332554 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88112C34A83C00332554 /* AppDelegate.swift */; };
 		63FA88142C34A83C00332554 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88132C34A83C00332554 /* SceneDelegate.swift */; };
 		63FA88162C34A83C00332554 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88152C34A83C00332554 /* ViewController.swift */; };
@@ -128,6 +133,7 @@
 		63725BBE2C46779000937BFD /* UserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
 		63725BC02C4677F400937BFD /* UserDefaultsExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtensionTests.swift; sourceTree = "<group>"; };
 		63725BC22C46783400937BFD /* UserServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserServiceTests.swift; sourceTree = "<group>"; };
+		638145F42C7FCD4200702D42 /* BudgetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetCell.swift; sourceTree = "<group>"; };
 		6383453C2C46F26100925ECC /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		6383453E2C46F26700925ECC /* NameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameViewController.swift; sourceTree = "<group>"; };
 		638345402C46F27200925ECC /* FinancialGoalsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialGoalsViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +144,9 @@
 		6383454A2C4714CC00925ECC /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		6383454C2C47F6B600925ECC /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 		6383454F2C480D1F00925ECC /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
+		638F24942C7FD2CD00C9E5E2 /* CustomPieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPieChartView.swift; sourceTree = "<group>"; };
+		638F24962C7FD3AC00C9E5E2 /* CustomBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBarChartView.swift; sourceTree = "<group>"; };
+		638F24982C7FD4A400C9E5E2 /* AddBudgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBudgetViewController.swift; sourceTree = "<group>"; };
 		63FA880E2C34A83C00332554 /* savings-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "savings-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63FA88112C34A83C00332554 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63FA88132C34A83C00332554 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -163,6 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				638145FA2C7FD19A00702D42 /* DGCharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +301,8 @@
 			isa = PBXGroup;
 			children = (
 				63725B7C2C45DB6D00937BFD /* BudgetsViewController.swift */,
+				638145F42C7FCD4200702D42 /* BudgetCell.swift */,
+				638F24982C7FD4A400C9E5E2 /* AddBudgetViewController.swift */,
 			);
 			path = Budgets;
 			sourceTree = "<group>";
@@ -306,6 +318,8 @@
 		63725B752C45DB3900937BFD /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				638F24962C7FD3AC00C9E5E2 /* CustomBarChartView.swift */,
+				638F24942C7FD2CD00C9E5E2 /* CustomPieChartView.swift */,
 				63725B802C45DB7E00937BFD /* CustomTabBarController.swift */,
 			);
 			path = Common;
@@ -344,6 +358,13 @@
 			path = SAppTests;
 			sourceTree = "<group>";
 		};
+		638145F62C7FD13900702D42 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6383453B2C46F25200925ECC /* OnboardingPages */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,6 +392,7 @@
 				63FA88102C34A83C00332554 /* savings-app */,
 				63725BB02C46747700937BFD /* SAppTests */,
 				63FA880F2C34A83C00332554 /* Products */,
+				638145F62C7FD13900702D42 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -462,6 +484,9 @@
 				63725BB42C46747700937BFD /* PBXTargetDependency */,
 			);
 			name = SAppTests;
+			packageProductDependencies = (
+				638145F92C7FD19A00702D42 /* DGCharts */,
+			);
 			productName = SAppTests;
 			productReference = 63725BAF2C46747700937BFD /* SAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -519,6 +544,7 @@
 			packageReferences = (
 				6347E1C22C3B323900B476ED /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				638345512C480DFF00925ECC /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				638145F32C7FCCCE00702D42 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 63FA880F2C34A83C00332554 /* Products */;
 			projectDirPath = "";
@@ -587,6 +613,7 @@
 				63725B652C45DAC600937BFD /* ProfileCoordinator.swift in Sources */,
 				63FA88392C35F39900332554 /* Expense.swift in Sources */,
 				63725B672C45DAD500937BFD /* HomeViewModel.swift in Sources */,
+				638F24992C7FD4A400C9E5E2 /* AddBudgetViewController.swift in Sources */,
 				63FA88512C35FC3400332554 /* ExpenseService.swift in Sources */,
 				63725B6F2C45DAF000937BFD /* ProfileViewModel.swift in Sources */,
 				63725B952C46640900937BFD /* UIColor+Extension.swift in Sources */,
@@ -596,6 +623,8 @@
 				63725B6B2C45DAE500937BFD /* AIViewModel.swift in Sources */,
 				638345452C46F28100925ECC /* ExpenseCategoriesViewController.swift in Sources */,
 				63FA884C2C35FBC200332554 /* ExpenseEndpoint.swift in Sources */,
+				638145F52C7FCD4200702D42 /* BudgetCell.swift in Sources */,
+				638F24952C7FD2CD00C9E5E2 /* CustomPieChartView.swift in Sources */,
 				63725B612C45DAB200937BFD /* AICoordinator.swift in Sources */,
 				63725B932C45DC9900937BFD /* SignInViewController.swift in Sources */,
 				63725B7D2C45DB6D00937BFD /* BudgetsViewController.swift in Sources */,
@@ -615,6 +644,7 @@
 				63725B872C45DC1500937BFD /* OnboardingCoordinator.swift in Sources */,
 				63725B5B2C45DAA400937BFD /* TabBarCoordinator.swift in Sources */,
 				63725B7B2C45DB6800937BFD /* AIViewController.swift in Sources */,
+				638F24972C7FD3AC00C9E5E2 /* CustomBarChartView.swift in Sources */,
 				63725B832C45DB9C00937BFD /* Budget.swift in Sources */,
 				63FA88142C34A83C00332554 /* SceneDelegate.swift in Sources */,
 				63FA88422C35FB2F00332554 /* HTTPMethod.swift in Sources */,
@@ -897,6 +927,14 @@
 				minimumVersion = 7.1.0;
 			};
 		};
+		638145F32C7FCCCE00702D42 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 		638345512C480DFF00925ECC /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
@@ -917,6 +955,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6347E1C22C3B323900B476ED /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		638145F92C7FD19A00702D42 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 638145F32C7FCCCE00702D42 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
 		};
 		638345522C480DFF00925ECC /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;

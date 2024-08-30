@@ -95,7 +95,9 @@ class OnboardingViewController: UIViewController {
         delegate?.moveToNextScreen(self)
     }
 
-    func saveData() {
-        // Override in subclasses to save specific data
+    func displayNextButton(display: Bool){
+        nextButton.isHidden = display
     }
+    
+    func saveData() {}
 }

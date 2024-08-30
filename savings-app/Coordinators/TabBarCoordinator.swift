@@ -37,6 +37,4 @@ class TabBarCoordinator: Coordinator {
         
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
-        
-    }
-}
+    }}

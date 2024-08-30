@@ -11,11 +11,11 @@ class OnboardingCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     private let navigationController: UINavigationController
     weak var delegate: CoordinatorDelegate?
-    
+
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-    
+
     func start() {
         let welcomeVC = WelcomeViewController()
         welcomeVC.delegate = self
@@ -30,7 +30,7 @@ extension OnboardingCoordinator: OnboardingViewControllerDelegate {
 
     func moveToNextScreen(_ currentViewController: UIViewController) {
         let nextVC: UIViewController
-        
+
         switch currentViewController {
         case is WelcomeViewController:
             nextVC = NameViewController()
@@ -42,12 +42,12 @@ extension OnboardingCoordinator: OnboardingViewControllerDelegate {
             nextVC = ExpenseCategoriesViewController()
         case is ExpenseCategoriesViewController:
             nextVC = SetupCompleteViewController()
+            (nextVC as? OnboardingViewController)?.displayNextButton(display: false)
         default:
             return
         }
-        
+
         (nextVC as? OnboardingViewController)?.delegate = self
         navigationController.pushViewController(nextVC, animated: true)
     }
 }
-
