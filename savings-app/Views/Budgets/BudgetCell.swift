@@ -8,22 +8,31 @@
 import UIKit
 
 class BudgetCell: UITableViewCell {
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .label
+        return label
+    }()
+    
     private let amountLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .systemGreen
         return label
     }()
     
     private let frequencyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .secondaryLabel
         return label
     }()
     
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = .secondaryLabel
+        label.textColor = .tertiaryLabel
         return label
     }()
     
@@ -37,28 +46,35 @@ class BudgetCell: UITableViewCell {
     }
     
     private func setupUI() {
+        contentView.addSubview(nameLabel)
         contentView.addSubview(amountLabel)
         contentView.addSubview(frequencyLabel)
         contentView.addSubview(dateLabel)
         
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
         amountLabel.translatesAutoresizingMaskIntoConstraints = false
         frequencyLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            amountLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 12),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
+            amountLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             amountLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             
             frequencyLabel.topAnchor.constraint(equalTo: amountLabel.bottomAnchor, constant: 4),
             frequencyLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             
-            dateLabel.topAnchor.constraint(equalTo: frequencyLabel.bottomAnchor, constant: 4),
+            dateLabel.topAnchor.constraint(equalTo: frequencyLabel.bottomAnchor, constant: 8),
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -12)
         ])
     }
     
     func configure(with budget: Budget) {
+        nameLabel.text = budget.name
         amountLabel.text = "$\(budget.amount)"
         frequencyLabel.text = budget.frequency.rawValue.capitalized
         
@@ -68,4 +84,3 @@ class BudgetCell: UITableViewCell {
         dateLabel.text = "Added on \(dateFormatter.string(from: budget.createdAt))"
     }
 }
-

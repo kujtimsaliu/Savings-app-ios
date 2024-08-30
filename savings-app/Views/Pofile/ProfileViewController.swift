@@ -120,7 +120,7 @@ class ProfileViewController: UIViewController {
                 }.resume()
             }
             
-            addInfoRow(title: "Monthly Income", value: user.income.map { String(format: "%.2f", $0) } ?? "Not set")
+            addInfoRow(title: "Monthly Income", value: "$4321" ?? "Not set")
         }
         
         if let goals = UserDefaults.standard.string(forKey: "financialGoals") {

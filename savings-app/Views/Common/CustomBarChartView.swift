@@ -11,7 +11,7 @@ class CustomBarChartView: UIView {
     private var bars: [Bar] = []
     let barWidth: CGFloat = 30
     let spacing: CGFloat = 20
-    private let bottomPadding: CGFloat = 30 // Space for dates
+    private let bottomPadding: CGFloat = 30 
     
     struct Bar {
         let value: Double
@@ -46,8 +46,26 @@ class CustomBarChartView: UIView {
             
             let barRect = CGRect(x: x, y: y, width: barWidth, height: barHeight)
             
-            context.setFillColor(bar.color.cgColor)
-            context.fill(barRect)
+            // Draw gradient
+            let gradientLayer = CAGradientLayer()
+            gradientLayer.frame = barRect
+            gradientLayer.colors = [bar.color.withAlphaComponent(0.7).cgColor, bar.color.cgColor]
+            gradientLayer.locations = [0.0, 1.0]
+            
+            // Render gradient to an image
+            let gradientImage = UIGraphicsImageRenderer(size: barRect.size).image { ctx in
+                gradientLayer.render(in: ctx.cgContext)
+            }
+            
+            // Draw the gradient image into the context
+            context.draw(gradientImage.cgImage!, in: barRect)
+            
+            // Draw shadow
+            context.setShadow(offset: CGSize(width: 0, height: 2), blur: 4, color: UIColor.black.withAlphaComponent(0.2).cgColor)
+            context.setFillColor(UIColor.clear.cgColor)
+            let shadowPath = UIBezierPath(roundedRect: barRect, cornerRadius: 8)
+            context.addPath(shadowPath.cgPath)
+            context.fillPath()
             
             // Draw date label
             let dateFormatter = DateFormatter()
@@ -55,7 +73,7 @@ class CustomBarChartView: UIView {
             let dateString = dateFormatter.string(from: bar.date)
             
             let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 10),
+                .font: UIFont.systemFont(ofSize: 10, weight: .regular),
                 .foregroundColor: UIColor.label
             ]
             let attributedDate = NSAttributedString(string: dateString, attributes: attributes)
@@ -63,5 +81,23 @@ class CustomBarChartView: UIView {
             let datePoint = CGPoint(x: x + (barWidth - dateSize.width) / 2, y: bounds.height - bottomPadding + 5)
             attributedDate.draw(at: datePoint)
         }
+        
+        // Draw X and Y axes
+        drawAxis(in: context, rect: rect)
+    }
+    
+    private func drawAxis(in context: CGContext, rect: CGRect) {
+        context.setStrokeColor(UIColor.gray.withAlphaComponent(0.5).cgColor)
+        context.setLineWidth(1.0)
+        
+        // X-axis
+        context.move(to: CGPoint(x: 0, y: rect.height - bottomPadding))
+        context.addLine(to: CGPoint(x: rect.width, y: rect.height - bottomPadding))
+        
+        // Y-axis
+        context.move(to: CGPoint(x: 0, y: 0))
+        context.addLine(to: CGPoint(x: 0, y: rect.height - bottomPadding))
+        
+        context.strokePath()
     }
 }

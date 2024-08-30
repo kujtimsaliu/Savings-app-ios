@@ -34,9 +34,9 @@ class ExpensesViewController: UIViewController {
         button.setTitle("Add Expense", for: .normal)
         button.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
         button.tintColor = .systemBlue
-        button.layer.cornerRadius = 12
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.systemBlue.cgColor
+//        button.layer.cornerRadius = 12
+//        button.layer.borderWidth = 1
+//        button.layer.borderColor = UIColor.systemBlue.cgColor
         button.backgroundColor = .systemBackground
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -165,9 +165,18 @@ class ExpensesViewController: UIViewController {
     }
     
     private func updateChartData() {
-        let dataPoints = viewModel.expenses.reversed().enumerated().map { index, expense in
-            CGPoint(x: CGFloat(index), y: CGFloat(expense.amount))
+        let expenses = viewModel.expenses.sorted { $0.date < $1.date }
+        let amounts = expenses.map { $0.amount }
+        let minAmount = amounts.min() ?? 0
+        let maxAmount = amounts.max() ?? 0
+        let yRange = maxAmount - minAmount
+        let xSpacing = view.bounds.width / CGFloat(expenses.count - 1)
+        
+        let dataPoints = expenses.enumerated().map { index, expense in
+            let y = CGFloat(expense.amount - minAmount) / yRange * (view.bounds.height - 40.0)
+            return (date: expense.date, amount: expense.amount)
         }
+        
         lineChartView.setDataPoints(dataPoints)
     }
     
