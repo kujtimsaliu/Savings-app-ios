@@ -30,6 +30,8 @@ class HomeViewController: UIViewController {
         setupUI()
         setupBindings()
         viewModel.fetchData()
+        updateNotificationStatus()
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     private func setupBindings() {
@@ -78,7 +80,7 @@ class HomeViewController: UIViewController {
             headerView.heightAnchor.constraint(equalToConstant: 200),
             
             greetingLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
-            greetingLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 20),
+            greetingLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 40),
             
 //            profileImageView.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 20),
             profileImageView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -30),
@@ -109,7 +111,7 @@ class HomeViewController: UIViewController {
             
             addExpenseButton.topAnchor.constraint(equalTo: recentTransactionsView.bottomAnchor, constant: 20),
             addExpenseButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            addExpenseButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            addExpenseButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30)
         ])
     }
     
@@ -148,7 +150,6 @@ class HomeViewController: UIViewController {
         recentTransactionsView.configure(with: viewModel.recentTransactions)
         
         if let user = UserDefaults.standard.getUser() {
-//            greetingLabel.text! += "\n\(user.givenName)"
             if let pictureUrl = URL(string: user.pictureUrl) {
                 DispatchQueue.global().async {
                     if let data = try? Data(contentsOf: pictureUrl) {
@@ -161,6 +162,24 @@ class HomeViewController: UIViewController {
         }
     }
     
+    func updateNotificationStatus() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                print("Notification permission granted")
+                UserDefaults.standard.set(true, forKey: "notificationPermissionGranted")
+            } else {
+                print("Notification permission denied")
+                UserDefaults.standard.set(false, forKey: "notificationPermissionGranted")
+            }
+        }
+        //in case it was changed while the app is running
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            let granted = settings.authorizationStatus == .authorized
+            UserDefaults.standard.set(granted, forKey: "notificationPermissionGranted")
+        }
+    }
+    
+    
     @objc private func addExpenseTapped() {
         let addExpenseVC = AddExpenseViewController()
         addExpenseVC.delegate = self
@@ -172,259 +191,5 @@ class HomeViewController: UIViewController {
 extension HomeViewController: AddExpenseViewControllerDelegate {
     func didAddExpense(_ expense: Expense) {
         viewModel.addExpense(expense)
-    }
-}
-
-// Custom Views
-class BalanceView: UIView {
-    private let balanceLabel = UILabel()
-    private let titleLabel = UILabel()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupUI() {
-        [balanceLabel, titleLabel].forEach { addSubview($0) }
-        
-        balanceLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        balanceLabel.textColor = .white
-        titleLabel.font = UIFont.systemFont(ofSize: 16)
-        titleLabel.textColor = .white
-        
-        [balanceLabel, titleLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
-        NSLayoutConstraint.activate([
-            balanceLabel.topAnchor.constraint(equalTo: topAnchor),
-            balanceLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            balanceLabel.heightAnchor.constraint(equalToConstant: 40),
-            
-            titleLabel.topAnchor.constraint(equalTo: balanceLabel.bottomAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-        
-        layer.cornerRadius = 15
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowRadius = 4
-        layer.shadowOpacity = 0.1
-        
-//        backgroundColor = .systemBackground
-    }
-    
-    func configure(with balance: Double) {
-        balanceLabel.text = String(format: "$%.2f", balance)
-        titleLabel.text = "Total Balance"
-    }
-}
-
-class ExpenseSummaryView: UIView {
-    private let totalExpensesLabel = UILabel()
-    private let averageDailyExpenseLabel = UILabel()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupUI() {
-        [totalExpensesLabel, averageDailyExpenseLabel].forEach { addSubview($0) }
-        
-        [totalExpensesLabel, averageDailyExpenseLabel].forEach {
-            $0.font = UIFont.systemFont(ofSize: 16)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-        
-        NSLayoutConstraint.activate([
-            totalExpensesLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            totalExpensesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            
-            averageDailyExpenseLabel.topAnchor.constraint(equalTo: totalExpensesLabel.bottomAnchor, constant: 8),
-            averageDailyExpenseLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 10),
-//            averageDailyExpenseLabel.bottomAnchor.constraint(equalTo: bottomAnchor,constant: 10)
-        ])
-        
-        layer.cornerRadius = 15
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowRadius = 4
-        layer.shadowOpacity = 0.1
-        
-        backgroundColor = .systemBackground
-    }
-    
-    func configure(with summary: (total: Double, average: Double)) {
-        totalExpensesLabel.text = "Total Expenses: $\(String(format: "%.2f", summary.total))"
-        averageDailyExpenseLabel.text = "Avg. Daily: $\(String(format: "%.2f", summary.average))"
-    }
-}
-
-class BudgetProgressView: UIView {
-    private let progressView = UIProgressView(progressViewStyle: .bar)
-    private let labelStack = UIStackView()
-    private let budgetLabel = UILabel()
-    private let remainingLabel = UILabel()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupUI() {
-        [progressView, labelStack].forEach { addSubview($0) }
-        [budgetLabel, remainingLabel].forEach { labelStack.addArrangedSubview($0) }
-        
-        progressView.progressTintColor = .systemBlue
-        labelStack.axis = .horizontal
-        labelStack.distribution = .equalSpacing
-        
-        [budgetLabel, remainingLabel].forEach { $0.font = UIFont.systemFont(ofSize: 14) }
-        
-        [progressView, labelStack].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
-        NSLayoutConstraint.activate([
-            progressView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            progressView.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 8),
-            progressView.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -8),
-            
-            labelStack.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 8),
-            labelStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            labelStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            labelStack.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-        
-        layer.cornerRadius = 15
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowRadius = 4
-        layer.shadowOpacity = 0.1
-        
-        backgroundColor = .systemBackground
-        
-        progressView.layer.cornerRadius = 4
-        progressView.clipsToBounds = true
-    }
-    
-    func configure(with progress: (spent: Double, total: Double)) {
-        progressView.progress = Float(progress.spent / progress.total)
-        budgetLabel.text = "Budget: $\(String(format: "%.2f", progress.total))"
-        remainingLabel.text = "Remaining: $\(String(format: "%.2f", progress.total - progress.spent))"
-    }
-}
-
-class RecentTransactionsView: UIView {
-    private let titleLabel = UILabel()
-    private let stackView = UIStackView()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupUI() {
-        [titleLabel, stackView].forEach { addSubview($0) }
-        
-        titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        titleLabel.text = "Recent Transactions"
-        
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        
-        [titleLabel, stackView].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            
-            stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 6),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -6),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
-        ])
-        layer.cornerRadius = 15
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowRadius = 4
-        layer.shadowOpacity = 0.1
-        
-        backgroundColor = .systemBackground
-    }
-    
-    func configure(with transactions: [Expense]) {
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
-        transactions.prefix(5).forEach { expense in
-            let transactionView = TransactionView()
-            transactionView.configure(with: expense)
-            stackView.addArrangedSubview(transactionView)
-        }
-    }
-}
-
-class TransactionView: UIView {
-    private let categoryLabel = UILabel()
-    private let amountLabel = UILabel()
-    private let dateLabel = UILabel()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupUI() {
-        [categoryLabel, amountLabel, dateLabel].forEach { addSubview($0) }
-        
-        categoryLabel.font = UIFont.systemFont(ofSize: 16)
-        amountLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
-        dateLabel.font = UIFont.systemFont(ofSize: 12)
-        dateLabel.textColor = .secondaryLabel
-        
-        [categoryLabel, amountLabel, dateLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
-        NSLayoutConstraint.activate([
-            categoryLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            categoryLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 5),
-            
-            amountLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            amountLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            
-            dateLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 4),
-            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 5),
-            dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
-        ])
-        
-        layer.cornerRadius = 10
-        backgroundColor = .systemGray6
-    }
-    
-    func configure(with expense: Expense) {
-        categoryLabel.text = expense.category
-        amountLabel.text = String(format: "$%.2f", expense.amount)
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM d, yyyy"
-        dateLabel.text = dateFormatter.string(from: expense.date)
     }
 }

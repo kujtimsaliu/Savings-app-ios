@@ -7,12 +7,14 @@
 
 import UIKit
 
-class NameViewController: OnboardingViewController {
+class NameViewController: OnboardingViewController, UITextFieldDelegate {
     lazy var nameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Your Name"
         tf.borderStyle = .roundedRect
+        tf.returnKeyType = .continue
         tf.font = UIFont.systemFont(ofSize: 17)
+        tf.delegate = self
         return tf
     }()
 
@@ -22,6 +24,7 @@ class NameViewController: OnboardingViewController {
         subtitleLabel.text = "Let's personalize your experience"
         progressView.progress = 0.2
         setupNameTextField()
+        setupTapGesture()
     }
 
     func setupNameTextField() {
@@ -33,6 +36,31 @@ class NameViewController: OnboardingViewController {
             nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             nameTextField.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
+    
+    @objc override func nextButtonTapped() {
+        
+        if let name = nameTextField.text, !name.isEmpty {
+            saveData()
+            delegate?.moveToNextScreen(self)
+        } else {
+            let alert = UIAlertController(title: "Error", message: "Please make sure you have entered your name", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 
     override func saveData() {

@@ -69,6 +69,11 @@
 		638F24972C7FD3AC00C9E5E2 /* CustomBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638F24962C7FD3AC00C9E5E2 /* CustomBarChartView.swift */; };
 		638F24992C7FD4A400C9E5E2 /* AddBudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 638F24982C7FD4A400C9E5E2 /* AddBudgetViewController.swift */; };
 		63D1FEC02C82655F0076AFA8 /* ReportsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D1FEBF2C82655F0076AFA8 /* ReportsViewController.swift */; };
+		63D1FEC22C83BB670076AFA8 /* TransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D1FEC12C83BB670076AFA8 /* TransactionView.swift */; };
+		63D1FEC42C83BB7B0076AFA8 /* RecentTransactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D1FEC32C83BB7B0076AFA8 /* RecentTransactions.swift */; };
+		63D1FEC62C83BB980076AFA8 /* BudgetProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D1FEC52C83BB980076AFA8 /* BudgetProgressView.swift */; };
+		63D1FEC82C83BBAE0076AFA8 /* ExpenseSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D1FEC72C83BBAE0076AFA8 /* ExpenseSummaryView.swift */; };
+		63D1FECA2C83BBCA0076AFA8 /* BalanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D1FEC92C83BBCA0076AFA8 /* BalanceView.swift */; };
 		63FA88122C34A83C00332554 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88112C34A83C00332554 /* AppDelegate.swift */; };
 		63FA88142C34A83C00332554 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88132C34A83C00332554 /* SceneDelegate.swift */; };
 		63FA88162C34A83C00332554 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA88152C34A83C00332554 /* ViewController.swift */; };
@@ -157,6 +162,11 @@
 		638F24962C7FD3AC00C9E5E2 /* CustomBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBarChartView.swift; sourceTree = "<group>"; };
 		638F24982C7FD4A400C9E5E2 /* AddBudgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBudgetViewController.swift; sourceTree = "<group>"; };
 		63D1FEBF2C82655F0076AFA8 /* ReportsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsViewController.swift; sourceTree = "<group>"; };
+		63D1FEC12C83BB670076AFA8 /* TransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionView.swift; sourceTree = "<group>"; };
+		63D1FEC32C83BB7B0076AFA8 /* RecentTransactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentTransactions.swift; sourceTree = "<group>"; };
+		63D1FEC52C83BB980076AFA8 /* BudgetProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetProgressView.swift; sourceTree = "<group>"; };
+		63D1FEC72C83BBAE0076AFA8 /* ExpenseSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseSummaryView.swift; sourceTree = "<group>"; };
+		63D1FEC92C83BBCA0076AFA8 /* BalanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceView.swift; sourceTree = "<group>"; };
 		63FA880E2C34A83C00332554 /* savings-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "savings-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63FA88112C34A83C00332554 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63FA88132C34A83C00332554 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -288,6 +298,11 @@
 			isa = PBXGroup;
 			children = (
 				63725B762C45DB5C00937BFD /* HomeViewController.swift */,
+				63D1FEC72C83BBAE0076AFA8 /* ExpenseSummaryView.swift */,
+				63D1FEC52C83BB980076AFA8 /* BudgetProgressView.swift */,
+				63D1FEC32C83BB7B0076AFA8 /* RecentTransactions.swift */,
+				63D1FEC12C83BB670076AFA8 /* TransactionView.swift */,
+				63D1FEC92C83BBCA0076AFA8 /* BalanceView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -622,6 +637,7 @@
 				63725B4C2C45B0CC00937BFD /* UserDefaults+Extensions.swift in Sources */,
 				63725B632C45DAC000937BFD /* BudgetsCoordinator.swift in Sources */,
 				6348CC352C824BC7003EDA42 /* CustomLineChartView.swift in Sources */,
+				63D1FEC22C83BB670076AFA8 /* TransactionView.swift in Sources */,
 				63FA88462C35FB3F00332554 /* ParameterEncoding.swift in Sources */,
 				63FA88442C35FB3700332554 /* HTTPTask.swift in Sources */,
 				6348CC2E2C8249AD003EDA42 /* UpcomingBillView.swift in Sources */,
@@ -630,6 +646,7 @@
 				6383454D2C47F6B600925ECC /* AuthResponse.swift in Sources */,
 				638345492C47148900925ECC /* SignUpViewModel.swift in Sources */,
 				638345472C46F28A00925ECC /* SetupCompleteViewController.swift in Sources */,
+				63D1FEC42C83BB7B0076AFA8 /* RecentTransactions.swift in Sources */,
 				63725B812C45DB7E00937BFD /* CustomTabBarController.swift in Sources */,
 				6348CC322C824A94003EDA42 /* AddExpenseViewController.swift in Sources */,
 				63725B8B2C45DC3A00937BFD /* SignInViewModel.swift in Sources */,
@@ -641,6 +658,7 @@
 				63FA88392C35F39900332554 /* Expense.swift in Sources */,
 				63D1FEC02C82655F0076AFA8 /* ReportsViewController.swift in Sources */,
 				63725B672C45DAD500937BFD /* HomeViewModel.swift in Sources */,
+				63D1FEC62C83BB980076AFA8 /* BudgetProgressView.swift in Sources */,
 				638F24992C7FD4A400C9E5E2 /* AddBudgetViewController.swift in Sources */,
 				63FA88512C35FC3400332554 /* ExpenseService.swift in Sources */,
 				63725B6F2C45DAF000937BFD /* ProfileViewModel.swift in Sources */,
@@ -655,6 +673,7 @@
 				638F24952C7FD2CD00C9E5E2 /* CustomPieChartView.swift in Sources */,
 				63725B612C45DAB200937BFD /* AICoordinator.swift in Sources */,
 				63725B932C45DC9900937BFD /* SignInViewController.swift in Sources */,
+				63D1FECA2C83BBCA0076AFA8 /* BalanceView.swift in Sources */,
 				63725B7D2C45DB6D00937BFD /* BudgetsViewController.swift in Sources */,
 				63FA88162C34A83C00332554 /* ViewController.swift in Sources */,
 				63725B892C45DC3100937BFD /* OnboardingViewModel.swift in Sources */,
@@ -669,6 +688,7 @@
 				638345502C480D1F00925ECC /* TokenManager.swift in Sources */,
 				6383453F2C46F26700925ECC /* NameViewController.swift in Sources */,
 				63725B902C45DC8400937BFD /* OnboardingPageViewController.swift in Sources */,
+				63D1FEC82C83BBAE0076AFA8 /* ExpenseSummaryView.swift in Sources */,
 				63725B872C45DC1500937BFD /* OnboardingCoordinator.swift in Sources */,
 				63725B5B2C45DAA400937BFD /* TabBarCoordinator.swift in Sources */,
 				63725B7B2C45DB6800937BFD /* AIViewController.swift in Sources */,

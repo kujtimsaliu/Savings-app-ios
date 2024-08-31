@@ -45,14 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Configure Google Sign-In
         GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: "347213759493-c7hdn80mephe4voo45ngsqvgldd6j6d6.apps.googleusercontent.com")
         
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if granted {
-                print("Notification permission granted")
-            } else {
-                print("Notification permission denied")
-            }
-        }
-        
         return true
     }
 

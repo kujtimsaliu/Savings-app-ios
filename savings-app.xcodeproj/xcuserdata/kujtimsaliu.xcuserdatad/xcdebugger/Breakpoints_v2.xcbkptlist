@@ -74,36 +74,6 @@
             endingLineNumber = "49"
             landmarkName = "signInWithGoogle(presenting:completion:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "807A82CF-D858-47C8-8F9C-88DF6DEA0C79 - ae7e0237a908a252"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "savings_app.SignUpViewModel.signInWithGoogle(presenting: __C.UIViewController, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "savings-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kujtimsaliu/Desktop/savings-app/savings-app/ViewModels/SignUpViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "49"
-                  endingLineNumber = "49">
-               </Location>
-               <Location
-                  uuid = "807A82CF-D858-47C8-8F9C-88DF6DEA0C79 - 6c07736a88e645f1"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;__C.GIDSignInResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in savings_app.SignUpViewModel.signInWithGoogle(presenting: __C.UIViewController, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "savings-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kujtimsaliu/Desktop/savings-app/savings-app/ViewModels/SignUpViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "49"
-                  endingLineNumber = "49">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -136,36 +106,6 @@
             endingLineNumber = "71"
             landmarkName = "signInWithGoogle(presenting:completion:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "E2B7233A-E0FC-4073-89E8-8D9B4D971C7A - 6c07736a88e65a07"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;__C.GIDSignInResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in savings_app.SignUpViewModel.signInWithGoogle(presenting: __C.UIViewController, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "savings-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kujtimsaliu/Desktop/savings-app/savings-app/ViewModels/SignUpViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "71"
-                  endingLineNumber = "71">
-               </Location>
-               <Location
-                  uuid = "E2B7233A-E0FC-4073-89E8-8D9B4D971C7A - 2f6cd0a68569b296"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Result&lt;savings_app.User, Swift.Error&gt;) -&gt; () in closure #1 (Swift.Optional&lt;__C.GIDSignInResult&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in savings_app.SignUpViewModel.signInWithGoogle(presenting: __C.UIViewController, completion: (Swift.Result&lt;(), Swift.Error&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "savings-app"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/kujtimsaliu/Desktop/savings-app/savings-app/ViewModels/SignUpViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "71"
-                  endingLineNumber = "71">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

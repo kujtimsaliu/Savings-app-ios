@@ -7,13 +7,14 @@
 
 import UIKit
 
-class FinancialGoalsViewController: OnboardingViewController {
+class FinancialGoalsViewController: OnboardingViewController, UITextViewDelegate {
     lazy var goalsTextView: UITextView = {
         let tv = UITextView()
         tv.font = UIFont.systemFont(ofSize: 17)
         tv.layer.borderColor = UIColor.systemGray4.cgColor
         tv.layer.borderWidth = 1
         tv.layer.cornerRadius = 8
+        tv.delegate = self
         return tv
     }()
 
@@ -23,6 +24,7 @@ class FinancialGoalsViewController: OnboardingViewController {
         subtitleLabel.text = "We'll help you achieve them"
         progressView.progress = 0.4
         setupGoalsTextView()
+        setupTapGesture()
     }
 
     func setupGoalsTextView() {
@@ -34,6 +36,30 @@ class FinancialGoalsViewController: OnboardingViewController {
             goalsTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             goalsTextView.heightAnchor.constraint(equalToConstant: 150)
         ])
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        view.endEditing(true)
+    }
+
+    func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    @objc override func nextButtonTapped() {
+        if let savingGoals = goalsTextView.text, !savingGoals.isEmpty {
+            saveData()
+            delegate?.moveToNextScreen(self)
+        } else {
+            let alert = UIAlertController(title: "Error", message: "Please make sure to write your main financial goals", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
     }
 
     override func saveData() {
