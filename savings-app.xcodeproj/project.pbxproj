@@ -299,7 +299,6 @@
 				6348CC2D2C8249AD003EDA42 /* UpcomingBillView.swift */,
 				6348CC2F2C8249D5003EDA42 /* ExpenseCell.swift */,
 				6348CC312C824A94003EDA42 /* AddExpenseViewController.swift */,
-				6348CC342C824BC7003EDA42 /* CustomLineChartView.swift */,
 			);
 			path = Expenses;
 			sourceTree = "<group>";
@@ -333,6 +332,7 @@
 		63725B752C45DB3900937BFD /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				6348CC342C824BC7003EDA42 /* CustomLineChartView.swift */,
 				638F24962C7FD3AC00C9E5E2 /* CustomBarChartView.swift */,
 				638F24942C7FD2CD00C9E5E2 /* CustomPieChartView.swift */,
 				63725B802C45DB7E00937BFD /* CustomTabBarController.swift */,

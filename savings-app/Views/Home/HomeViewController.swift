@@ -4,8 +4,11 @@ class HomeViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
+    private let headerView = UIView()
     private let greetingLabel = UILabel()
+    private let profileImageView = UIImageView()
     private let totalBalanceView = BalanceView()
+    
     private let expenseSummaryView = ExpenseSummaryView()
     private let budgetProgressView = BudgetProgressView()
     private let recentTransactionsView = RecentTransactionsView()
@@ -38,21 +41,25 @@ class HomeViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .systemBackground
         title = "Home"
-        
+
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
-        [greetingLabel, totalBalanceView, expenseSummaryView, budgetProgressView, recentTransactionsView, addExpenseButton].forEach { contentView.addSubview($0) }
-        
+
+        [headerView, expenseSummaryView, budgetProgressView, recentTransactionsView, addExpenseButton].forEach { contentView.addSubview($0) }
+
+        headerView.addSubview(greetingLabel)
+        headerView.addSubview(profileImageView)
+        headerView.addSubview(totalBalanceView)
+
         setupConstraints()
         setupStyles()
-        
+
         addExpenseButton.addTarget(self, action: #selector(addExpenseTapped), for: .touchUpInside)
     }
     
     private func setupConstraints() {
-        [scrollView, contentView, greetingLabel, totalBalanceView, expenseSummaryView, budgetProgressView, recentTransactionsView, addExpenseButton].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
-        
+        [scrollView, contentView, headerView, greetingLabel, profileImageView, totalBalanceView, expenseSummaryView, budgetProgressView, recentTransactionsView, addExpenseButton].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
+
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -65,53 +72,92 @@ class HomeViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            greetingLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            greetingLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            greetingLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            headerView.heightAnchor.constraint(equalToConstant: 200),
             
-            totalBalanceView.topAnchor.constraint(equalTo: greetingLabel.bottomAnchor, constant: 20),
-            totalBalanceView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            totalBalanceView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            greetingLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
+            greetingLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 20),
             
-            expenseSummaryView.topAnchor.constraint(equalTo: totalBalanceView.bottomAnchor, constant: 20),
+//            profileImageView.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 20),
+            profileImageView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -30),
+//            profileImageView.leadingAnchor.constraint(equalTo: greetingLabel.trailingAnchor),
+            profileImageView.centerYAnchor.constraint(equalTo: greetingLabel.centerYAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: 60),
+            profileImageView.heightAnchor.constraint(equalToConstant: 60),
+            
+            totalBalanceView.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 20),
+            totalBalanceView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20),
+            totalBalanceView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -20),
+//            totalBalanceView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -20),
+//            totalBalanceView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -20),
+            
+            expenseSummaryView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 20),
             expenseSummaryView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             expenseSummaryView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            expenseSummaryView.heightAnchor.constraint(equalToConstant: 70),
             
             budgetProgressView.topAnchor.constraint(equalTo: expenseSummaryView.bottomAnchor, constant: 20),
             budgetProgressView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             budgetProgressView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            budgetProgressView.heightAnchor.constraint(equalToConstant: 40),
             
-            recentTransactionsView.topAnchor.constraint(equalTo: budgetProgressView.bottomAnchor, constant: 20),
+            recentTransactionsView.topAnchor.constraint(equalTo: budgetProgressView.bottomAnchor, constant: 40),
             recentTransactionsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             recentTransactionsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             
             addExpenseButton.topAnchor.constraint(equalTo: recentTransactionsView.bottomAnchor, constant: 20),
             addExpenseButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            addExpenseButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            addExpenseButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
         ])
     }
     
     private func setupStyles() {
+        scrollView.contentInsetAdjustmentBehavior = .never
+
+        headerView.backgroundColor = .systemIndigo
+        headerView.layer.cornerRadius = 20
+        headerView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+
+        profileImageView.layer.cornerRadius = 30
+        profileImageView.clipsToBounds = true
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.backgroundColor = .systemGray4
+
         greetingLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        
+        greetingLabel.textColor = .white
+//        greetingLabel.textAlignment = .right
+
         addExpenseButton.setTitle("Add Expense", for: .normal)
-        addExpenseButton.backgroundColor = .systemBlue
+        addExpenseButton.backgroundColor = .systemIndigo
         addExpenseButton.setTitleColor(.white, for: .normal)
-        addExpenseButton.layer.cornerRadius = 8
-        addExpenseButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+        addExpenseButton.layer.cornerRadius = 25
+        addExpenseButton.contentEdgeInsets = UIEdgeInsets(top: 15, left: 30, bottom: 15, right: 30)
+        addExpenseButton.layer.shadowColor = UIColor.black.cgColor
+        addExpenseButton.layer.shadowOffset = CGSize(width: 0, height: 2)
+        addExpenseButton.layer.shadowRadius = 4
+        addExpenseButton.layer.shadowOpacity = 0.1
     }
     
-    
     private func updateUI() {
-        
         greetingLabel.text = viewModel.greeting
         totalBalanceView.configure(with: viewModel.totalBalance)
         expenseSummaryView.configure(with: viewModel.expenseSummary)
         budgetProgressView.configure(with: viewModel.budgetProgress)
         recentTransactionsView.configure(with: viewModel.recentTransactions)
         
-        if let user = UserDefaults.standard.getUser(){
-            greetingLabel.text! += ", \(user.givenName)"
+        if let user = UserDefaults.standard.getUser() {
+//            greetingLabel.text! += "\n\(user.givenName)"
+            if let pictureUrl = URL(string: user.pictureUrl) {
+                DispatchQueue.global().async {
+                    if let data = try? Data(contentsOf: pictureUrl) {
+                        DispatchQueue.main.async {
+                            self.profileImageView.image = UIImage(data: data)
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -147,19 +193,29 @@ class BalanceView: UIView {
         [balanceLabel, titleLabel].forEach { addSubview($0) }
         
         balanceLabel.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        balanceLabel.textColor = .white
         titleLabel.font = UIFont.systemFont(ofSize: 16)
-        titleLabel.textColor = .secondaryLabel
+        titleLabel.textColor = .white
         
         [balanceLabel, titleLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         NSLayoutConstraint.activate([
             balanceLabel.topAnchor.constraint(equalTo: topAnchor),
             balanceLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            balanceLabel.heightAnchor.constraint(equalToConstant: 40),
             
-            titleLabel.topAnchor.constraint(equalTo: balanceLabel.bottomAnchor, constant: 4),
+            titleLabel.topAnchor.constraint(equalTo: balanceLabel.bottomAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+        
+        layer.cornerRadius = 15
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowRadius = 4
+        layer.shadowOpacity = 0.1
+        
+//        backgroundColor = .systemBackground
     }
     
     func configure(with balance: Double) {
@@ -190,13 +246,21 @@ class ExpenseSummaryView: UIView {
         }
         
         NSLayoutConstraint.activate([
-            totalExpensesLabel.topAnchor.constraint(equalTo: topAnchor),
-            totalExpensesLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            totalExpensesLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            totalExpensesLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             
             averageDailyExpenseLabel.topAnchor.constraint(equalTo: totalExpensesLabel.bottomAnchor, constant: 8),
-            averageDailyExpenseLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            averageDailyExpenseLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            averageDailyExpenseLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 10),
+//            averageDailyExpenseLabel.bottomAnchor.constraint(equalTo: bottomAnchor,constant: 10)
         ])
+        
+        layer.cornerRadius = 15
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowRadius = 4
+        layer.shadowOpacity = 0.1
+        
+        backgroundColor = .systemBackground
     }
     
     func configure(with summary: (total: Double, average: Double)) {
@@ -233,15 +297,26 @@ class BudgetProgressView: UIView {
         [progressView, labelStack].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         NSLayoutConstraint.activate([
-            progressView.topAnchor.constraint(equalTo: topAnchor),
-            progressView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            progressView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            progressView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            progressView.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 8),
+            progressView.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -8),
             
             labelStack.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 8),
-            labelStack.leadingAnchor.constraint(equalTo: leadingAnchor),
-            labelStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            labelStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            labelStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             labelStack.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+        
+        layer.cornerRadius = 15
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowRadius = 4
+        layer.shadowOpacity = 0.1
+        
+        backgroundColor = .systemBackground
+        
+        progressView.layer.cornerRadius = 4
+        progressView.clipsToBounds = true
     }
     
     func configure(with progress: (spent: Double, total: Double)) {
@@ -276,14 +351,21 @@ class RecentTransactionsView: UIView {
         [titleLabel, stackView].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             
             stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 6),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -6),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
         ])
+        layer.cornerRadius = 15
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 2)
+        layer.shadowRadius = 4
+        layer.shadowOpacity = 0.1
+        
+        backgroundColor = .systemBackground
     }
     
     func configure(with transactions: [Expense]) {
@@ -322,16 +404,19 @@ class TransactionView: UIView {
         [categoryLabel, amountLabel, dateLabel].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
         
         NSLayoutConstraint.activate([
-            categoryLabel.topAnchor.constraint(equalTo: topAnchor),
-            categoryLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            categoryLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            categoryLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 5),
             
-            amountLabel.centerYAnchor.constraint(equalTo: categoryLabel.centerYAnchor),
-            amountLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            amountLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            amountLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             
             dateLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 4),
-            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 5),
+            dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
         ])
+        
+        layer.cornerRadius = 10
+        backgroundColor = .systemGray6
     }
     
     func configure(with expense: Expense) {

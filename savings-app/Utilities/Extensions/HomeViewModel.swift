@@ -14,17 +14,32 @@ class HomeViewModel {
     var updateUI: (() -> Void)?
     
     var greeting: String {
-        let hour = Calendar.current.component(.hour, from: Date())
-        switch hour {
-        case 0..<12: return "Good Morning"
-        case 12..<17: return "Good Afternoon"
-        default: return "Good Evening"
+        var username = ""
+        if let user = UserDefaults.standard.getUser() {
+            username = user.givenName
         }
+            
+            let hour = Calendar.current.component(.hour, from: Date())
+            switch hour {
+            case 0..<12: return "Good Morning, \(username) "
+            case 12..<17: return "Good Afternoon, \(username)"
+            default: return "Good Evening, \(username) "
+            }
     }
     
     var totalBalance: Double {
-        // Implement logic to calculate total balance
-        return 5000.0 // Placeholder value
+        if let data = UserDefaults.standard.data(forKey: "savedBudgets") {
+            do {
+                budgets = try JSONDecoder().decode([Budget].self, from: data)
+            } catch {
+                print("Failed to load budgets: \(error)")
+            }
+        }
+        var totalBudget = 0.0
+        budgets.forEach { budget in
+            totalBudget += budget.amount
+        }
+        return totalBudget
     }
     
     var expenseSummary: (total: Double, average: Double) {
@@ -49,8 +64,7 @@ class HomeViewModel {
         expenses = [
             Expense(id: "1", amount: 50.0, category: "Food", description: "Groceries", date: Date(), paymentMethod: "Credit Card", isRecurring: false, recurringFrequency: nil, hasReminder: false),
             Expense(id: "2", amount: 130.0, category: "Transport", description: "Gas", date: Date().addingTimeInterval(-86400), paymentMethod: "Debit Card", isRecurring: false, recurringFrequency: nil, hasReminder: false),
-            Expense(id: "3", amount: 100.0, category: "Entertainment", description: "Movie tickets", date: Date().addingTimeInterval(-172800), paymentMethod: "Cash", isRecurring: false, recurringFrequency: nil, hasReminder: false),
-            Expense(id: "4", amount: 30.0, category: "Entertainment", description: "Movie tickets", date: Date().addingTimeInterval(-172800), paymentMethod: "Cash", isRecurring: false, recurringFrequency: nil, hasReminder: false)
+            Expense(id: "3", amount: 100.0, category: "Entertainment", description: "Movie tickets", date: Date().addingTimeInterval(-172800), paymentMethod: "Cash", isRecurring: false, recurringFrequency: nil, hasReminder: false)
         ]
         
         budgets = [
