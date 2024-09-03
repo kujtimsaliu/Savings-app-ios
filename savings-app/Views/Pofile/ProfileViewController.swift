@@ -176,7 +176,7 @@ class ProfileHeaderView: UIView {
         ])
         
         if let user = UserDefaults.standard.getUser() {
-            nameLabel.text = user.name
+            nameLabel.text = user.givenName
             if let pictureUrl = URL(string: user.pictureUrl) {
                 DispatchQueue.global().async {
                     if let data = try? Data(contentsOf: pictureUrl) {

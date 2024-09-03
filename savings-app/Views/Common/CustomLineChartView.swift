@@ -200,3 +200,71 @@ class CustomLineChartView: UIView {
         tooltipView.isHidden = true
     }
 }
+
+
+
+
+class CustomLineChartView1: UIView {
+    private var dataPoints: [CGPoint] = []
+    private let lineColor: UIColor = .systemBlue
+    private let lineWidth: CGFloat = 2.0
+    private let circleDiameter: CGFloat = 8.0
+    
+    private let monthLabels: [String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+    
+    func setDataPoints(_ points: [Double]) {
+        let maxY = points.max() ?? 1
+        let normalizedPoints = points.enumerated().map { CGPoint(x: CGFloat($0), y: CGFloat($1) / CGFloat(maxY)) }
+        self.dataPoints = normalizedPoints
+        setNeedsDisplay()
+    }
+    
+    override func draw(_ rect: CGRect) {
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        
+        // Draw axes
+        context.setStrokeColor(UIColor.gray.cgColor)
+        context.setLineWidth(1.0)
+        context.move(to: CGPoint(x: 0, y: rect.height))
+        context.addLine(to: CGPoint(x: rect.width, y: rect.height))
+        context.strokePath()
+        
+        // Draw month labels
+        let labelFont = UIFont.systemFont(ofSize: 10)
+        let labelAttributes: [NSAttributedString.Key: Any] = [.font: labelFont, .foregroundColor: UIColor.gray]
+        let labelHeight: CGFloat = 15
+        
+        for (index, label) in monthLabels.enumerated() {
+            let x = CGFloat(index) * (rect.width / CGFloat(monthLabels.count - 1))
+            let labelRect = CGRect(x: x - 15, y: rect.height - labelHeight, width: 30, height: labelHeight)
+            label.draw(in: labelRect, withAttributes: labelAttributes)
+        }
+        
+        guard dataPoints.count > 1 else { return }
+        
+        // Scale points to fit the view
+        let scaledPoints = scalePoints(dataPoints, to: CGSize(width: rect.width, height: rect.height - labelHeight - circleDiameter))
+        
+        // Draw line
+        context.setStrokeColor(lineColor.cgColor)
+        context.setLineWidth(lineWidth)
+        context.move(to: scaledPoints[0])
+        for point in scaledPoints.dropFirst() {
+            context.addLine(to: point)
+        }
+        context.strokePath()
+        
+        // Draw circles at data points
+        context.setFillColor(lineColor.cgColor)
+        for point in scaledPoints {
+            context.fillEllipse(in: CGRect(x: point.x - circleDiameter/2, y: point.y - circleDiameter/2, width: circleDiameter, height: circleDiameter))
+        }
+    }
+    
+    private func scalePoints(_ points: [CGPoint], to size: CGSize) -> [CGPoint] {
+        return points.map { point in
+            CGPoint(x: point.x * (size.width / CGFloat(points.count - 1)),
+                    y: size.height - (point.y * size.height) + circleDiameter/2)
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import UIKit
+//import DGCharts
 
 class HomeViewController: UIViewController {
     private let scrollView = UIScrollView()
@@ -11,11 +12,12 @@ class HomeViewController: UIViewController {
     
     private let expenseSummaryView = ExpenseSummaryView()
     private let budgetProgressView = BudgetProgressView()
+    private let spendingChartView = CustomLineChartView()
+    private let quickActionsView = QuickActionsView()
     private let recentTransactionsView = RecentTransactionsView()
     private let addExpenseButton = UIButton(type: .system)
     
     private let viewModel: HomeViewModel
-    
     init(viewModel: HomeViewModel = HomeViewModel()) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -48,21 +50,23 @@ class HomeViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .systemBackground
         title = "Home"
-
+        
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-
-        [headerView, expenseSummaryView, budgetProgressView, recentTransactionsView, addExpenseButton].forEach { contentView.addSubview($0) }
-
+        
+        [headerView, expenseSummaryView, budgetProgressView, spendingChartView, quickActionsView, recentTransactionsView, addExpenseButton].forEach { contentView.addSubview($0) }
+        
         headerView.addSubview(greetingLabel)
         headerView.addSubview(profileImageView)
         headerView.addSubview(totalBalanceView)
-
+        
         setupConstraints()
         setupStyles()
-
+        
         addExpenseButton.addTarget(self, action: #selector(addExpenseTapped), for: .touchUpInside)
+        quickActionsView.delegate = self
     }
+
     
     private func setupConstraints() {
         [scrollView, contentView, headerView, greetingLabel, profileImageView, totalBalanceView, expenseSummaryView, budgetProgressView, recentTransactionsView, addExpenseButton].forEach { $0.translatesAutoresizingMaskIntoConstraints = false }
