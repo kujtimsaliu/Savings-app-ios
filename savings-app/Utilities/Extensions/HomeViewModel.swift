@@ -58,6 +58,34 @@ class HomeViewModel {
         return Array(expenses.prefix(5))
     }
     
+    var monthlySpending: [Double] {
+        // Calculate monthly spending for the last 6 months
+        let calendar = Calendar.current
+        let now = Date()
+        return (0..<6).map { monthsAgo in
+            let startOfMonth = calendar.date(byAdding: .month, value: -monthsAgo, to: .now)!
+            let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+            return expenses.filter { $0.date >= startOfMonth && $0.date <= endOfMonth }
+                .reduce(0) { $0 + $1.amount }
+        }.reversed()
+    }
+    
+    func addBudget(_ budget: Budget) {
+        budgets.append(budget)
+        saveBudgets()
+        updateUI?()
+    }
+    
+    private func saveBudgets() {
+        do {
+            let data = try JSONEncoder().encode(budgets)
+            UserDefaults.standard.set(data, forKey: "savedBudgets")
+        } catch {
+            print("Failed to save budgets: \(error)")
+        }
+    }
+
+    
     func fetchData() {
         // Fetch expenses and budgets from your data source (e.g., Core Data, API, etc.)
         // For this example, we'll use dummy data

@@ -34,6 +34,11 @@ class HomeViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.fetchData()
+    }
+    
     private func setupBindings() {
         viewModel.updateUI = { [weak self] in
             self?.updateUI()
@@ -188,8 +193,72 @@ class HomeViewController: UIViewController {
     }
 }
 
+extension HomeViewController: QuickActionsViewDelegate {
+    func didTapAddBudget() {
+        let addBudgetVC = AddBudgetViewController()
+        addBudgetVC.delegate = self
+        let navController = UINavigationController(rootViewController: addBudgetVC)
+        present(navController, animated: true)
+    }
+    
+    func didTapViewReports() {
+        let reportsVC = ReportsViewController()
+        navigationController?.pushViewController(reportsVC, animated: true)
+    }
+}
+
 extension HomeViewController: AddExpenseViewControllerDelegate {
     func didAddExpense(_ expense: Expense) {
         viewModel.addExpense(expense)
     }
+}
+
+extension HomeViewController: AddBudgetViewControllerDelegate {
+    func didAddBudget(_ budget: Budget) {
+        viewModel.addBudget(budget)
+    }
+}
+
+
+class QuickActionsView: UIView {
+    weak var delegate: QuickActionsViewDelegate?
+    
+    private let addBudgetButton = UIButton(type: .system)
+    private let viewReportsButton = UIButton(type: .system)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        addSubview(addBudgetButton)
+        addSubview(viewReportsButton)
+        
+        addBudgetButton.setTitle("Add Budget", for: .normal)
+        viewReportsButton.setTitle("View Reports", for: .normal)
+        
+        addBudgetButton.addTarget(self, action: #selector(addBudgetTapped), for: .touchUpInside)
+        viewReportsButton.addTarget(self, action: #selector(viewReportsTapped), for: .touchUpInside)
+        
+        addBudgetButton.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor)
+        viewReportsButton.anchor(top: addBudgetButton.bottomAnchor, left: leftAnchor, right: rightAnchor, topConstant: 16)
+    }
+    
+    @objc private func addBudgetTapped() {
+        delegate?.didTapAddBudget()
+    }
+    
+    @objc private func viewReportsTapped() {
+        delegate?.didTapViewReports()
+    }
+}
+
+protocol QuickActionsViewDelegate: AnyObject {
+    func didTapAddBudget()
+    func didTapViewReports()
 }

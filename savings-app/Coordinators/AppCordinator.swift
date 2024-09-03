@@ -27,6 +27,7 @@ class AppCoordinator: Coordinator {
 
     func start() {
         if UserDefaults.standard.hasCompletedOnboarding() {
+//            showOnboarding()
             showMainApp()
         } else {
             showOnboarding()

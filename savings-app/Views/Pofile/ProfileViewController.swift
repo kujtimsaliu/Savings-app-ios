@@ -8,22 +8,136 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.showsVerticalScrollIndicator = false
-        return scrollView
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private let headerView = ProfileHeaderView()
+    
+    private enum Section: Int, CaseIterable {
+        case userInfo
+        case preferences
+        case financialInfo
+        case account
+    }
+    
+    private enum Row: Hashable {
+        case name
+        case email
+        case notificationSettings
+        case expenseReminder
+        case addCard
+        case linkedAccounts
+        case logout
+    }
+    
+    private lazy var dataSource: UITableViewDiffableDataSource<Section, Row> = {
+        return UITableViewDiffableDataSource(tableView: tableView) { [weak self] (tableView, indexPath, row) -> UITableViewCell? in
+            return self?.configureCell(for: row, at: indexPath)
+        }
     }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        setupTableView()
+        applySnapshot()
+    }
     
-    private let contentView = UIView()
+    private func setupUI() {
+        view.backgroundColor = .systemBackground
+        title = "Profile"
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
     
+    private func setupTableView() {
+        tableView.delegate = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.tableHeaderView = headerView
+        headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 200)
+    }
+    
+    private func applySnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Row>()
+        snapshot.appendSections(Section.allCases)
+        
+        snapshot.appendItems([.name, .email], toSection: .userInfo)
+        snapshot.appendItems([.notificationSettings, .expenseReminder], toSection: .preferences)
+        snapshot.appendItems([.addCard, .linkedAccounts], toSection: .financialInfo)
+        snapshot.appendItems([.logout], toSection: .account)
+        
+        dataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
+    private func configureCell(for row: Row, at indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.accessoryType = .disclosureIndicator
+        
+        switch row {
+        case .name:
+            cell.textLabel?.text = "Name"
+            cell.detailTextLabel?.text = UserDefaults.standard.getUser()?.name
+        case .email:
+            cell.textLabel?.text = "Email"
+            cell.detailTextLabel?.text = UserDefaults.standard.getUser()?.email
+        case .notificationSettings:
+            cell.textLabel?.text = "Notification Settings"
+        case .expenseReminder:
+            cell.textLabel?.text = "Expense Reminder"
+        case .addCard:
+            cell.textLabel?.text = "Add Card"
+        case .linkedAccounts:
+            cell.textLabel?.text = "Linked Accounts"
+        case .logout:
+            cell.textLabel?.text = "Logout"
+            cell.textLabel?.textColor = .systemRed
+            cell.accessoryType = .none
+        }
+        
+        return cell
+    }
+}
+
+extension ProfileViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let row = dataSource.itemIdentifier(for: indexPath) else { return }
+        
+        switch row {
+        case .notificationSettings:
+            let notificationSettingsVC = NotificationSettingsViewController()
+            navigationController?.pushViewController(notificationSettingsVC, animated: true)
+        case .expenseReminder:
+            let expenseReminderVC = ExpenseReminderViewController()
+            navigationController?.pushViewController(expenseReminderVC, animated: true)
+        case .addCard:
+            let addCardVC = AddCardViewController()
+            navigationController?.pushViewController(addCardVC, animated: true)
+        case .linkedAccounts:
+            let linkedAccountsVC = LinkedAccountsViewController()
+            navigationController?.pushViewController(linkedAccountsVC, animated: true)
+        case .logout:
+            // Implement logout functionality
+            print("Logout tapped")
+        default:
+            break
+        }
+    }
+}
+
+class ProfileHeaderView: UIView {
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 50
-        imageView.layer.borderWidth = 3
-        imageView.layer.borderColor = UIColor.systemBlue.cgColor
-        imageView.backgroundColor = .systemGray5 // Placeholder color
+        imageView.backgroundColor = .systemGray5
         return imageView
     }()
     
@@ -34,133 +148,60 @@ class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let emailLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .secondaryLabel
-        label.textAlignment = .center
-        return label
-    }()
-    
-    private lazy var infoStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 20
-        stackView.distribution = .fillEqually
-        return stackView
-    }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
-        loadUserData()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupUI() {
-        view.backgroundColor = .systemBackground
-        title = "Profile"
+        addSubview(profileImageView)
+        addSubview(nameLabel)
         
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        
-        [profileImageView, nameLabel, emailLabel, infoStackView].forEach { contentView.addSubview($0) }
-        
-        setupConstraints()
-    }
-    
-    private func setupConstraints() {
-        [scrollView, contentView, profileImageView, nameLabel, emailLabel, infoStackView].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            profileImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            profileImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 20),
             profileImageView.widthAnchor.constraint(equalToConstant: 100),
             profileImageView.heightAnchor.constraint(equalToConstant: 100),
             
-            nameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 20),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            
-            emailLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            emailLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            emailLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            
-            infoStackView.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 30),
-            infoStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            infoStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            infoStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
+            nameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 16),
+            nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
-    }
-    
-    private func loadUserData() {
+        
         if let user = UserDefaults.standard.getUser() {
             nameLabel.text = user.name
-            emailLabel.text = user.email
-            
             if let pictureUrl = URL(string: user.pictureUrl) {
-                URLSession.shared.dataTask(with: pictureUrl) { [weak self] data, _, error in
-                    if let data = data, let image = UIImage(data: data) {
+                DispatchQueue.global().async {
+                    if let data = try? Data(contentsOf: pictureUrl) {
                         DispatchQueue.main.async {
-                            self?.profileImageView.image = image
+                            self.profileImageView.image = UIImage(data: data)
                         }
                     }
-                }.resume()
+                }
             }
-            
-            addInfoRow(title: "Monthly Income", value: "$4321" ?? "Not set")
-        }
-        
-        if let goals = UserDefaults.standard.string(forKey: "financialGoals") {
-            addInfoRow(title: "Financial Goals", value: goals)
-        }
-        
-        if let categories = UserDefaults.standard.stringArray(forKey: "selectedExpenseCategories") {
-            addInfoRow(title: "Expense Categories", value: categories.joined(separator: ", "))
         }
     }
-    
-    private func addInfoRow(title: String, value: String) {
-        let rowView = UIView()
-        let titleLabel = UILabel()
-        let valueLabel = UILabel()
-        
-        titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        titleLabel.text = title
-        
-        valueLabel.font = UIFont.systemFont(ofSize: 16)
-        valueLabel.text = value
-        valueLabel.textColor = .secondaryLabel
-        valueLabel.numberOfLines = 0
-        
-        [titleLabel, valueLabel].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            rowView.addSubview($0)
-        }
-        
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: rowView.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: rowView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: rowView.trailingAnchor),
-            
-            valueLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            valueLabel.leadingAnchor.constraint(equalTo: rowView.leadingAnchor),
-            valueLabel.trailingAnchor.constraint(equalTo: rowView.trailingAnchor),
-            valueLabel.bottomAnchor.constraint(equalTo: rowView.bottomAnchor)
-        ])
-        
-        infoStackView.addArrangedSubview(rowView)
-    }
+}
+
+class NotificationSettingsViewController: UIViewController {
+    // Implement notification settings UI and functionality
+}
+
+class ExpenseReminderViewController: UIViewController {
+    // Implement expense reminder settings UI and functionality
+}
+
+class AddCardViewController: UIViewController {
+    // Implement add card UI and functionality
+}
+
+class LinkedAccountsViewController: UIViewController {
+    // Implement linked accounts UI and functionality
 }
