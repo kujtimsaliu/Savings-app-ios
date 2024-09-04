@@ -213,6 +213,7 @@ class CustomLineChartView1: UIView {
     private let monthLabels: [String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
     
     func setDataPoints(_ points: [Double]) {
+        backgroundColor = .clear
         let maxY = points.max() ?? 1
         let normalizedPoints = points.enumerated().map { CGPoint(x: CGFloat($0), y: CGFloat($1) / CGFloat(maxY)) }
         self.dataPoints = normalizedPoints

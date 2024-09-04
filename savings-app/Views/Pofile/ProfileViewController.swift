@@ -190,18 +190,197 @@ class ProfileHeaderView: UIView {
     }
 }
 
+
+
+
 class NotificationSettingsViewController: UIViewController {
-    // Implement notification settings UI and functionality
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private var notificationSettings: [String: Bool] = [
+        "Expense Reminders": true,
+        "Budget Alerts": true,
+        "Weekly Summary": false
+    ]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Notification Settings"
+        setupTableView()
+    }
+    
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.frame = view.bounds
+        tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    }
+}
+
+extension NotificationSettingsViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return notificationSettings.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let setting = Array(notificationSettings.keys)[indexPath.row]
+        cell.textLabel?.text = setting
+        let switchView = UISwitch(frame: .zero)
+        switchView.isOn = notificationSettings[setting] ?? false
+        switchView.tag = indexPath.row
+        switchView.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
+        cell.accessoryView = switchView
+        return cell
+    }
+    
+    @objc func switchChanged(_ sender: UISwitch) {
+        let setting = Array(notificationSettings.keys)[sender.tag]
+        notificationSettings[setting] = sender.isOn
+    }
 }
 
 class ExpenseReminderViewController: UIViewController {
-    // Implement expense reminder settings UI and functionality
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private var reminderFrequency: String = "Daily"
+    private var reminderTime: Date = Date()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Expense Reminders"
+        setupTableView()
+    }
+    
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.frame = view.bounds
+        tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    }
+}
+
+extension ExpenseReminderViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        if indexPath.section == 0 {
+            cell.textLabel?.text = "Reminder Frequency"
+            cell.detailTextLabel?.text = reminderFrequency
+            cell.accessoryType = .disclosureIndicator
+        } else {
+            cell.textLabel?.text = "Reminder Time"
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            cell.detailTextLabel?.text = formatter.string(from: reminderTime)
+            cell.accessoryType = .disclosureIndicator
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 0 {
+            // Show frequency picker
+        } else {
+            // Show time picker
+        }
+    }
 }
 
 class AddCardViewController: UIViewController {
-    // Implement add card UI and functionality
+    private let cardNumberTextField = UITextField()
+    private let expirationDateTextField = UITextField()
+    private let cvvTextField = UITextField()
+    private let addButton = UIButton(type: .system)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Add Card"
+        setupUI()
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = .systemBackground
+        
+        [cardNumberTextField, expirationDateTextField, cvvTextField, addButton].forEach {
+            view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        cardNumberTextField.placeholder = "Card Number"
+        expirationDateTextField.placeholder = "MM/YY"
+        cvvTextField.placeholder = "CVV"
+        addButton.setTitle("Add Card", for: .normal)
+        
+        NSLayoutConstraint.activate([
+            cardNumberTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            cardNumberTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            cardNumberTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            expirationDateTextField.topAnchor.constraint(equalTo: cardNumberTextField.bottomAnchor, constant: 20),
+            expirationDateTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            expirationDateTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            cvvTextField.topAnchor.constraint(equalTo: expirationDateTextField.bottomAnchor, constant: 20),
+            cvvTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            cvvTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            addButton.topAnchor.constraint(equalTo: cvvTextField.bottomAnchor, constant: 40),
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+        
+        addButton.addTarget(self, action: #selector(addCardTapped), for: .touchUpInside)
+    }
+    
+    @objc private func addCardTapped() {
+        // Implement card addition logic
+    }
 }
 
 class LinkedAccountsViewController: UIViewController {
-    // Implement linked accounts UI and functionality
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private var linkedAccounts: [String] = ["Bank of America", "Chase"]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "Linked Accounts"
+        setupTableView()
+    }
+    
+    private func setupTableView() {
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.frame = view.bounds
+        tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    }
+}
+
+extension LinkedAccountsViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return linkedAccounts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = linkedAccounts[indexPath.row]
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            linkedAccounts.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
 }

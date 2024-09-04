@@ -69,6 +69,7 @@ class HomeViewModel {
                 .reduce(0) { $0 + $1.amount }
         }.reversed()
     }
+
     
     func addBudget(_ budget: Budget) {
         budgets.append(budget)
