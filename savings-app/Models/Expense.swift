@@ -22,10 +22,13 @@ struct ExpenseUpdate: Codable {
 }
 
 struct Expense: Codable {
-    let id: Int
-    let amount: Float
+    let id: String
+    let amount: Double
     let category: String
+    let description: String
     let date: Date
-    let description: String?
-    let ownerId: Int
+    let paymentMethod: String
+    let isRecurring: Bool
+    let recurringFrequency: String?
+    let hasReminder: Bool
 }

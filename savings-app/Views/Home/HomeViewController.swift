@@ -15,14 +15,5 @@ class HomeViewController: UIViewController {
         print(tokenManager.getRefreshToken() ?? "tapa")
         view.backgroundColor = .systemBackground
         title = "Home"
-        
-        
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if granted {
-                print("Notification permission granted")
-            } else {
-                print("Notification permission denied")
-            }
-        }
     }
 }

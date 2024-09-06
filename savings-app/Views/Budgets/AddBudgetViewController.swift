@@ -133,13 +133,21 @@ class AddBudgetViewController: UIViewController {
     }
     
     @objc private func addButtonTapped() {
-        guard let name = nameTextField.text, !name.isEmpty,
-              let amountString = amountTextField.text, let amount = Double(amountString),
-              let savingsGoalString = savingsGoalTextField.text, let savingsGoal = Double(savingsGoalString) else {
-            // Show error
+        guard let name = nameTextField.text, !name.isEmpty else {
+            showAlert(title: "Error", message: "Please enter a budget name.")
             return
         }
         
+        guard let amountString = amountTextField.text, let amount = Double(amountString), amount > 0 else {
+            showAlert(title: "Error", message: "Please enter a valid amount.")
+            return
+        }
+        
+        guard let savingsGoalString = savingsGoalTextField.text, let savingsGoal = Double(savingsGoalString), savingsGoal >= 0 else {
+            showAlert(title: "Error", message: "Please enter a valid savings goal.")
+            return
+        }
+
         let frequencyIndex = frequencySegmentedControl.selectedSegmentIndex
         let frequency: BudgetFrequency
         switch frequencyIndex {
@@ -163,14 +171,44 @@ class AddBudgetViewController: UIViewController {
                                remainingAmount: amount,
                                savingsGoal: savingsGoal,
                                notifyWhenClose: notifySwitch.isOn)
+
+        showConfirmationDialog(for: newBudget)
+    }
+    
+    private func showConfirmationDialog(for budget: Budget) {
+        let message = """
+        Budget Name: \(budget.name)
+        Amount: \(budget.amount)
+        Savings Goal: \(budget.savingsGoal)
+        Frequency: \(budget.frequency.rawValue.capitalized)
+        Notify: \(budget.notifyWhenClose ? "Yes" : "No")
+        """
         
-        delegate?.didAddBudget(newBudget)
+        let alertController = UIAlertController(title: "Confirm Budget", message: message, preferredStyle: .alert)
         
-        if notifySwitch.isOn {
-            scheduleNotification(for: newBudget)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default) { [weak self] _ in
+            self?.delegate?.didAddBudget(budget)
+            
+            if budget.notifyWhenClose {
+                self?.scheduleNotification(for: budget)
+            }
+            
+            self?.dismiss(animated: true)
         }
         
-        dismiss(animated: true)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
     
     private func scheduleNotification(for budget: Budget) {
